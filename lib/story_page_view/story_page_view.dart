@@ -23,22 +23,25 @@ enum IndicatorAnimationCommand { pause, resume }
 ///
 /// [itemBuilder], [storyLength], [pageLength] are required.
 class StoryPageView extends StatefulWidget {
-  StoryPageView({
-    Key? key,
-    required this.itemBuilder,
-    required this.storyLength,
-    required this.pageLength,
-    this.gestureItemBuilder,
-    this.initialStoryIndex,
-    this.initialPage = 0,
-    this.onPageLimitReached,
-    this.indicatorDuration = const Duration(seconds: 5),
-    this.indicatorPadding =
-        const EdgeInsets.symmetric(vertical: 32, horizontal: 8),
-    this.backgroundColor = Colors.black,
-    this.indicatorAnimationController,
-    this.onPageChanged,
-  }) : super(key: key);
+  StoryPageView(
+      {Key? key,
+      required this.itemBuilder,
+      required this.storyLength,
+      required this.pageLength,
+      this.gestureItemBuilder,
+      this.initialStoryIndex,
+      this.initialPage = 0,
+      this.onPageLimitReached,
+      this.indicatorDuration = const Duration(seconds: 5),
+      this.indicatorPadding =
+          const EdgeInsets.symmetric(vertical: 32, horizontal: 8),
+      this.indicatorBackgroundColor = Colors.black12,
+      this.indicatorValueColor = Colors.white,
+      this.indicatorHeight = 2,
+      this.backgroundColor = Colors.black,
+      this.indicatorAnimationController,
+      this.onPageChanged})
+      : super(key: key);
 
   /// Function to build story content
   final _StoryItemBuilder itemBuilder;
@@ -62,6 +65,15 @@ class StoryPageView extends StatefulWidget {
 
   /// duration of [Indicators]
   final Duration indicatorDuration;
+
+  /// background color of [Indicators]
+  final Color indicatorBackgroundColor;
+
+  /// value color of [Indicators]
+  final Color indicatorValueColor;
+
+  /// height of [Indicators]
+  final double indicatorHeight;
 
   /// Called when the very last story is finished.
   ///
@@ -145,6 +157,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                   gestureItemBuilder: widget.gestureItemBuilder,
                   indicatorDuration: widget.indicatorDuration,
                   indicatorPadding: widget.indicatorPadding,
+                  indicatorBackgroundColor: widget.indicatorBackgroundColor,
+                  indicatorValueColor: widget.indicatorValueColor,
+                  indicatorHeight: widget.indicatorHeight,
                   indicatorAnimationController:
                       widget.indicatorAnimationController,
                 ),
@@ -167,19 +182,22 @@ class _StoryPageViewState extends State<StoryPageView> {
 }
 
 class _StoryPageFrame extends StatefulWidget {
-  const _StoryPageFrame._({
-    Key? key,
-    required this.storyLength,
-    required this.initialStoryIndex,
-    required this.pageIndex,
-    required this.isCurrentPage,
-    required this.isPaging,
-    required this.itemBuilder,
-    required this.gestureItemBuilder,
-    required this.indicatorDuration,
-    required this.indicatorPadding,
-    required this.indicatorAnimationController,
-  }) : super(key: key);
+  const _StoryPageFrame._(
+      {Key? key,
+      required this.storyLength,
+      required this.initialStoryIndex,
+      required this.pageIndex,
+      required this.isCurrentPage,
+      required this.isPaging,
+      required this.itemBuilder,
+      required this.gestureItemBuilder,
+      required this.indicatorDuration,
+      required this.indicatorPadding,
+      required this.indicatorAnimationController,
+      required this.indicatorBackgroundColor,
+      required this.indicatorValueColor,
+      required this.indicatorHeight})
+      : super(key: key);
   final int storyLength;
   final int initialStoryIndex;
   final int pageIndex;
@@ -189,6 +207,9 @@ class _StoryPageFrame extends StatefulWidget {
   final _StoryItemBuilder? gestureItemBuilder;
   final Duration indicatorDuration;
   final EdgeInsetsGeometry indicatorPadding;
+  final Color indicatorBackgroundColor;
+  final Color indicatorValueColor;
+  final double indicatorHeight;
   final ValueNotifier<IndicatorAnimationCommand>? indicatorAnimationController;
 
   static Widget wrapped({
@@ -204,6 +225,9 @@ class _StoryPageFrame extends StatefulWidget {
     _StoryItemBuilder? gestureItemBuilder,
     required Duration indicatorDuration,
     required EdgeInsetsGeometry indicatorPadding,
+    required Color indicatorBackgroundColor,
+    required Color indicatorValueColor,
+    required double indicatorHeight,
     required ValueNotifier<IndicatorAnimationCommand>?
         indicatorAnimationController,
   }) {
@@ -243,6 +267,9 @@ class _StoryPageFrame extends StatefulWidget {
         gestureItemBuilder: gestureItemBuilder,
         indicatorDuration: indicatorDuration,
         indicatorPadding: indicatorPadding,
+        indicatorBackgroundColor: indicatorBackgroundColor,
+        indicatorValueColor: indicatorValueColor,
+        indicatorHeight: indicatorHeight,
         indicatorAnimationController: indicatorAnimationController,
       ),
     );
@@ -334,6 +361,9 @@ class _StoryPageFrameState extends State<_StoryPageFrame>
           isCurrentPage: widget.isCurrentPage,
           isPaging: widget.isPaging,
           padding: widget.indicatorPadding,
+          backgroundColor: widget.indicatorBackgroundColor,
+          valueColor: widget.indicatorValueColor,
+          height: widget.indicatorHeight,
         ),
         Gestures(
           animationController: animationController,

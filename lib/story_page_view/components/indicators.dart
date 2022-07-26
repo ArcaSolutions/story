@@ -5,19 +5,25 @@ import 'package:story/story_page_view/story_limit_controller.dart';
 import '../story_stack_controller.dart';
 
 class Indicators extends StatefulWidget {
-  const Indicators({
-    Key? key,
-    required this.animationController,
-    required this.storyLength,
-    required this.isCurrentPage,
-    required this.isPaging,
-    required this.padding,
-  }) : super(key: key);
+  const Indicators(
+      {Key? key,
+      required this.animationController,
+      required this.storyLength,
+      required this.isCurrentPage,
+      required this.isPaging,
+      required this.padding,
+      required this.backgroundColor,
+      required this.valueColor,
+      required this.height})
+      : super(key: key);
   final int storyLength;
   final AnimationController? animationController;
   final EdgeInsetsGeometry padding;
   final bool isCurrentPage;
   final bool isPaging;
+  final Color backgroundColor;
+  final Color valueColor;
+  final double height;
 
   @override
   _IndicatorsState createState() => _IndicatorsState();
@@ -62,13 +68,15 @@ class _IndicatorsState extends State<Indicators> {
         children: List.generate(
           widget.storyLength,
           (index) => _Indicator(
-            index: index,
-            value: (index == currentStoryIndex)
-                ? indicatorAnimation.value
-                : (index > currentStoryIndex)
-                    ? 0
-                    : 1,
-          ),
+              index: index,
+              value: (index == currentStoryIndex)
+                  ? indicatorAnimation.value
+                  : (index > currentStoryIndex)
+                      ? 0
+                      : 1,
+              backgroundColor: widget.backgroundColor,
+              valueColor: widget.valueColor,
+              height: widget.height),
         ),
       ),
     );
@@ -82,13 +90,19 @@ class _IndicatorsState extends State<Indicators> {
 }
 
 class _Indicator extends StatelessWidget {
-  const _Indicator({
-    Key? key,
-    required this.index,
-    required this.value,
-  }) : super(key: key);
+  const _Indicator(
+      {Key? key,
+      required this.index,
+      required this.value,
+      required this.backgroundColor,
+      required this.valueColor,
+      required this.height})
+      : super(key: key);
   final int index;
   final double value;
+  final Color backgroundColor;
+  final Color valueColor;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +111,9 @@ class _Indicator extends StatelessWidget {
         padding: EdgeInsets.only(left: (index == 0) ? 0 : 4),
         child: LinearProgressIndicator(
           value: value,
-          backgroundColor: Colors.black.withOpacity(0.08),
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-          minHeight: 2,
+          backgroundColor: backgroundColor,
+          valueColor: AlwaysStoppedAnimation<Color>(valueColor),
+          minHeight: height,
         ),
       ),
     );
